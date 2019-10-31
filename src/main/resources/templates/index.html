@@ -1,47 +1,15 @@
 <!DOCTYPE HTML>
-<html>
-<head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: common_header(~{::title})">
     <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="/css/bootstrap.css" rel="stylesheet"/>
-    <style>
-        body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-        }
-    </style>
-
 </head>
 <body>
-<!-- header -->
-<div id="nav-bar" class="navbar navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="/">myCalendar</a>
-            <div class="nav-collapse">
-                <ul class="nav">
-                    <li><a id="navWelcomeLink" href="/">Welcome</a></li>
-                    <li><a id="navEventsLink" href="/events/">All Events</a></li>
-                    <li><a id="navMyEventsLink" href="/events/my">My Events</a></li>
-                    <li><a id="navCreateEventLink" href="/events/form">Create Event</a></li>
-                    <li><a id="navH2Link" href="/h2-console">H2</a></li>
-                </ul>
-            </div>
-            <div id="nav-account" class="nav-collapse pull-right">
-                <ul class="nav">
 
-                </ul>
-            </div>
-        </div>
-    </div>
-
+<div th:replace="header :: navbar">
 </div>
 
 <div class="container">
-    <!--    <c:if test="${message != null}">-->
-    <!--        <div class="alert alert-success" id="message"><c:out value="${message}"/></div>-->
-    <!--    </c:if>-->
-    <h1 id="title">Page Title Here</h1>
-    <!-- header -->
+    <th:block th:replace="header :: container(~{::title})"/>
     <p>Below you can find some highlights about myCalendar. Each chapter will have a slightly different summary
         depending on what will be done.</p>
     <ul>
@@ -59,7 +27,7 @@
             using user1@example.com.
         </li>
         <li>
-            <a id="h2Link" href="h2-console">H2 Database Console</a> - Allows you to interact with the database using a
+            <a id="h2Link" href="h2-console" th:href="@{/h2-console}">H2 Database Console</a> - Allows you to interact with the database using a
             web console. To use it:
             <ul>
                 <li>Click the link above.</li>
