@@ -8,7 +8,8 @@
 <div th:replace="header :: navbar"></div>
 
 <div class="container">
-    <th:block th:replace="header :: container(~{::title})"/>
+    <div th:replace="~{header :: messages}"></div>
+    <h1 id="title">My Events</h1>
     <p id="description">Below you can find the events for
         <strong th:text="${currentUser.email}">Current User</strong>.
         Once security is applied this will be the events for the currently logged in user.</p>
@@ -30,7 +31,7 @@
             <td th:text="${event.when}"></td>
             <td th:text="${event.owner.name}"></td>
             <td th:text="${event.attendee.name}"></td>
-            <td><a th:href="@{/events/${event.id}}" th:text="${event.summary}">Summary</a></td>
+            <td><a th:href="@{/events/{id}(id=${event.id})}" th:text="${event.summary}">Summary</a></td>
 
         </tr>
         </tbody>

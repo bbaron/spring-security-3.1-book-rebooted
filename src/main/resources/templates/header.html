@@ -39,14 +39,18 @@
 
 </div>
 
+<div class="alert alert-success" id="message" th:fragment="messages">
+    Message Placeholder
+</div>
+
 <div class="container">
-    <th:block th:fragment="container(title)">
+    <div th:fragment="container(title)">
         <!--    <c:if test="${message != null}">-->
-        <div class="alert alert-success" id="message">Message Placeholder</div>
+        <div class="alert alert-success" id="1message">Message Placeholder</div>
         <!--    </c:if>-->
         <!--suppress ThymeleafVariablesResolveInspection -->
         <h1 id="title" th:replace="${title}">Page Title Here</h1>
-    </th:block>
+    </div>
 </div>
 
 </body>

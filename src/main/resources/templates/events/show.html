@@ -8,7 +8,8 @@
 <div th:replace="header :: navbar"></div>
 
 <div class="container">
-    <th:block th:replace="header :: container('Event = ' + ${event.summary})"/>
+    <div th:replace="~{header :: messages}"></div>
+    <h1 id="title" th:text="'Event = ' + ${event.summary}"></h1>
     <dl>
         <dt>Owner</dt>
         <dd id="owner" th:text="${event.owner.name}">Last, First</dd>

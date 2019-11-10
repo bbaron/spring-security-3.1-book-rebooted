@@ -8,7 +8,8 @@
 <div th:replace="header :: navbar"></div>
 
 <div class="container">
-    <th:block th:replace="header :: container(~{::title})"/>
+    <div th:replace="~{header :: messages}"></div>
+    <h1 id="title">Create Event</h1>
     <form action="#" th:action="@{/events/new}" method="post" th:object="${createEventForm}">
         <!--        <form:errors path="*" element="div" cssClass="alert alert-error"/>-->
         <fieldset>
