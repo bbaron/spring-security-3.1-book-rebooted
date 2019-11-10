@@ -25,4 +25,8 @@ public class CalendarUser {
     private final String email;
     private final String password;
 
+    public String getName() {
+        return String.format("%s, %s", lastName, firstName);
+    }
+
 }

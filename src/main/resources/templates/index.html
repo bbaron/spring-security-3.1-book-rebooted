@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="header :: common_header(~{::title})">
-    <title>Getting Started: Serving Web Content</title>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="header :: common_header('Getting Started: Serving Web Content')">
+    <title>Event - Summary</title>
 </head>
 <body>
 
@@ -9,7 +9,7 @@
 </div>
 
 <div class="container">
-    <th:block th:replace="header :: container(~{::title})"/>
+    <th:block th:replace="header :: common_header('Getting Started: Serving Web Content')"/>
     <p>Below you can find some highlights about myCalendar. Each chapter will have a slightly different summary
         depending on what will be done.</p>
     <ul>
@@ -27,6 +27,7 @@
             using user1@example.com.
         </li>
         <li>
+            <!--suppress HtmlUnknownTarget -->
             <a id="h2Link" href="h2-console" th:href="@{/h2-console}">H2 Database Console</a> - Allows you to interact with the database using a
             web console. To use it:
             <ul>

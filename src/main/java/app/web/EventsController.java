@@ -7,13 +7,14 @@ import app.service.UserContext;
 import app.web.model.CreateEventForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Controller
 @RequestMapping("/events")
@@ -48,7 +49,20 @@ public class EventsController {
     }
 
     @GetMapping("/form")
-    public String createEventForm(@ModelAttribute CreateEventForm createEventForm) {
+    public String createEventForm(Model model
+                                  //@ModelAttribute CreateEventForm createEventForm
+            ) {
+        var createEventForm = new CreateEventForm();
+        createEventForm.setSummary("A new event....");
+        createEventForm.setDescription("This was auto-populated to save time creating a valid event.");
+        createEventForm.setWhen(LocalDateTime.now());
+
+        // make the attendee not the current user
+        CalendarUser currentUser = userContext.getCurrentUser();
+        int attendeeId = currentUser.getId() == 0 ? 1 : 0;
+        CalendarUser attendee = calendarService.getUser(attendeeId);
+        createEventForm.setAttendeeEmail(attendee.getEmail());
+        model.addAttribute("createEventForm", createEventForm);
         return "events/create";
     }
 
@@ -64,7 +78,7 @@ public class EventsController {
         // provide default values to make user submission easier
         createEventForm.setSummary("A new event....");
         createEventForm.setDescription("This was auto-populated to save time creating a valid event.");
-        createEventForm.setWhen(LocalDate.now());
+        createEventForm.setWhen(LocalDateTime.now());
 
         // make the attendee not the current user
         CalendarUser currentUser = userContext.getCurrentUser();

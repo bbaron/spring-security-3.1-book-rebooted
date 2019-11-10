@@ -5,7 +5,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * An {@link Event} is an item on a calendar that contains an owner (the person who created it), an attendee
@@ -13,7 +13,6 @@ import java.time.LocalDate;
  * fields are required.
  *
  * @author Rob Winch
- *
  */
 @Getter
 @ToString
@@ -29,7 +28,7 @@ public class Event implements Serializable {
     @NotBlank
     private final String description;
     @NotNull
-    private final LocalDate when;
+    private final LocalDateTime when;
     @NotNull
     private final CalendarUser owner;
     private final CalendarUser attendee;

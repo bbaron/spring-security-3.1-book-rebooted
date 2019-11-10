@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="header :: common_header('All Events')">
+    <title>All Events</title>
+</head>
+<body>
+
+<div th:replace="header :: navbar"></div>
+
+<div class="container">
+    <th:block th:replace="header :: container(~{::title})"/>
+    <p>This shows all events for all users. Once security is applied it will only be viewable to administrators.</p>
+    <div id="create" class="pull-right"><a th:href="@{/events/form}">Create Event</a></div>
+    <table class="table table-bordered table-striped table-condensed">
+        <thead>
+        <tr>
+            <th>Date/Time</th>
+            <th>Owner</th>
+            <th>Attendee</th>
+            <th>Summary</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${#lists.isEmpty(events)}">
+                <td colspan="2" class="msg">No events.</td>
+            </tr>
+            <tr th:each="event : ${events}">
+                <td th:text="${event.when}"></td>
+                <td th:text="${event.owner.name}"></td>
+                <td th:text="${event.attendee.name}"></td>
+                <td><a th:href="@{/events/${event.id}}" th:text="${event.summary}">Summary</a></td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

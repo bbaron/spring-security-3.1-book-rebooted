@@ -6,17 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
-import static app.dataaccess.JdbcCalendarUserDao.*;
+import static app.dataaccess.JdbcCalendarUserDao.CalendarUserRowMapper;
 import static java.util.Objects.requireNonNull;
 
 /**
@@ -46,7 +44,7 @@ public class JdbcEventDao implements EventDao {
     @Override
     @Transactional(readOnly = true)
     public Event getEvent(int eventId) {
-        return jdbcOperations.queryForObject(EVENT_QUERY + " and e.id = ?", 
+        return jdbcOperations.queryForObject(EVENT_QUERY + " and e.id = ?",
                 this::eventRowMapper, eventId);
     }
 
@@ -58,19 +56,19 @@ public class JdbcEventDao implements EventDao {
         if (event.getId() != null) {
             throw new IllegalArgumentException("event.getId() must be null when creating a new Message");
         }
-        final CalendarUser owner = event.getOwner();
+        var owner = event.getOwner();
         if (owner == null) {
             throw new IllegalArgumentException("event.getOwner() cannot be null");
         }
-        final CalendarUser attendee = event.getAttendee();
+        var attendee = event.getAttendee();
         if (attendee == null) {
             throw new IllegalArgumentException("attendee.getOwner() cannot be null");
         }
-        final LocalDate when = event.getWhen();
+        var when = event.getWhen();
         if (when == null) {
             throw new IllegalArgumentException("event.getWhen() cannot be null");
         }
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        var keyHolder = new GeneratedKeyHolder();
         this.jdbcOperations.update(connection -> {
             PreparedStatement ps = connection.prepareStatement(
                     "insert into events (when,summary,description,owner,attendee) values (?, ?, ?, ?, ?)",
@@ -90,14 +88,14 @@ public class JdbcEventDao implements EventDao {
     @Override
     @Transactional(readOnly = true)
     public List<Event> findForUser(int userId) {
-        return jdbcOperations.query(EVENT_QUERY + " and (e.owner = ? or e.attendee = ?) order by e.id", 
+        return jdbcOperations.query(EVENT_QUERY + " and (e.owner = ? or e.attendee = ?) order by e.id",
                 this::eventRowMapper, userId, userId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Event> getEvents() {
-        return jdbcOperations.query(EVENT_QUERY + " order by e.id", 
+        return jdbcOperations.query(EVENT_QUERY + " order by e.id",
                 this::eventRowMapper);
     }
 
@@ -114,13 +112,13 @@ public class JdbcEventDao implements EventDao {
         event.id(rs.getInt("events.id"));
         event.summary(rs.getString("events.summary"));
         event.description(rs.getString("events.description"));
-        var when = rs.getDate("events.when").toLocalDate();
+        var when = rs.getTimestamp("events.when").toLocalDateTime();
         event.when(when);
         event.attendee(attendee);
         event.owner(owner);
         return event.build();
     }
-    
+
 
     private static final RowMapper<CalendarUser> ATTENDEE_ROW_MAPPER = CalendarUserRowMapper.ATTENDEE;
     private static final RowMapper<CalendarUser> OWNER_ROW_MAPPER = CalendarUserRowMapper.OWNER;

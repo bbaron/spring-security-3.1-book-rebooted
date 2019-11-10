@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="header :: common_header('Event = ' + ${event.summary})">
+    <title>Event - Summary</title>
+</head>
+<body>
+
+<div th:replace="header :: navbar"></div>
+
+<div class="container">
+    <th:block th:replace="header :: container('Event = ' + ${event.summary})"/>
+    <dl>
+        <dt>Owner</dt>
+        <dd id="owner" th:text="${event.owner.name}">Last, First</dd>
+        <dt>Attendee</dt>
+        <dd id="attendee" th:text="${event.attendee.name}">Last, First</dd>
+        <dt>When</dt>
+        <dd id="when" th:text="${event.when}">When</dd>
+        <dt>Message Details</dt>
+        <dd id="description" th:text="${event.description}">Description</dd>
+    </dl>
+</div>
+</body>
+</html>

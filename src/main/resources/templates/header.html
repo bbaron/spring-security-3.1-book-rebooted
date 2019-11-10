@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 
 <head th:fragment="common_header(title)">
-    <title th:replace="${title}">Place title here</title>
+    <!--suppress ThymeleafVariablesResolveInspection -->
+    <title th:text="${title}">Place title here</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+    <link href="/static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
     <style>
         body {
             padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -24,7 +25,8 @@
                     <li><a id="navEventsLink" href="/events/">All Events</a></li>
                     <li><a id="navMyEventsLink" href="/events/my">My Events</a></li>
                     <li><a id="navCreateEventLink" href="/events/form">Create Event</a></li>
-                    <li><a id="navH2Link" href="/h2-console">H2</a></li>
+                    <li><!--suppress HtmlUnknownTarget -->
+                        <a id="navH2Link" href="/h2-console">H2</a></li>
                 </ul>
             </div>
             <div id="nav-account" class="nav-collapse pull-right">
@@ -42,6 +44,7 @@
         <!--    <c:if test="${message != null}">-->
         <div class="alert alert-success" id="message">Message Placeholder</div>
         <!--    </c:if>-->
+        <!--suppress ThymeleafVariablesResolveInspection -->
         <h1 id="title" th:replace="${title}">Page Title Here</h1>
     </th:block>
 </div>

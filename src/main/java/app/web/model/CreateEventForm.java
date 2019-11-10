@@ -1,13 +1,14 @@
 package app.web.model;
 
 import app.domain.Event;
+import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * A form object that is used for creating a new {@link Event}. Using a different object is one way of preventing
@@ -15,6 +16,7 @@ import java.time.LocalDate;
  *
  * @author Rob Winch
  */
+@Data
 public class CreateEventForm {
     @NotBlank(message = "Attendee Email is required")
     @Email(message = "Attendee Email must be a valid email")
@@ -25,37 +27,6 @@ public class CreateEventForm {
     private String description;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @NotNull(message = "Event Date/Time is required")
-    private LocalDate when;
+    private LocalDateTime when;
 
-    public String getAttendeeEmail() {
-        return attendeeEmail;
-    }
-
-    public void setAttendeeEmail(String attendeeEmail) {
-        this.attendeeEmail = attendeeEmail;
-    }
-
-    public String getSummary() {
-        return summary;
-    }
-
-    public void setSummary(String summary) {
-        this.summary = summary;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDate getWhen() {
-        return when;
-    }
-
-    public void setWhen(LocalDate when) {
-        this.when = when;
-    }
 }
