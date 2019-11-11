@@ -21,6 +21,7 @@
         <div class="form-actions">
             <input id="submit" class="btn" name="submit" type="submit" value="Login"/>
         </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
 </div>
 </body>
