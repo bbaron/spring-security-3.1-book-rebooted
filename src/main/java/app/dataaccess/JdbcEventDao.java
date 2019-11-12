@@ -3,6 +3,7 @@ package app.dataaccess;
 import app.domain.CalendarUser;
 import app.domain.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -44,8 +45,12 @@ public class JdbcEventDao implements EventDao {
     @Override
     @Transactional(readOnly = true)
     public Event getEvent(int eventId) {
-        return jdbcOperations.queryForObject(EVENT_QUERY + " and e.id = ?",
-                this::eventRowMapper, eventId);
+        try {
+            return jdbcOperations.queryForObject(EVENT_QUERY + " and e.id = ?",
+                    this::eventRowMapper, eventId);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override
@@ -73,9 +78,11 @@ public class JdbcEventDao implements EventDao {
             PreparedStatement ps = connection.prepareStatement(
                     "insert into events (when,summary,description,owner,attendee) values (?, ?, ?, ?, ?)",
                     new String[]{"id"});
-            //noinspection deprecation
-            ps.setDate(1, new java.sql.Date(when.getYear() - 1900,
-                    when.getMonthValue() - 1, when.getDayOfMonth()));
+
+            @SuppressWarnings("deprecation")
+            var dt = new java.sql.Date(when.getYear() - 1900,
+                    when.getMonthValue() - 1, when.getDayOfMonth());
+            ps.setDate(1, dt);
             ps.setString(2, event.getSummary());
             ps.setString(3, event.getDescription());
             ps.setInt(4, owner.getId());

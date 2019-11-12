@@ -4,10 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
@@ -15,14 +15,18 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 public class SecurityConfigs {
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user =
-                User.withDefaultPasswordEncoder()
-                        .username("user1@example.com")
-                        .password("user1")
-                        .roles("USER")
-                        .build();
+        @SuppressWarnings("deprecation")
+        var users = User.withDefaultPasswordEncoder();
+        var user = users.username("user1@example.com")
+                .password("user1")
+                .roles("USER")
+                .build();
+        var admin = users.username("admin1@example.com")
+                .password("admin1")
+                .roles("USER", "ADMIN")
+                .build();
 
-        return new InMemoryUserDetailsManager(user);
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
     @Configuration
@@ -61,23 +65,29 @@ public class SecurityConfigs {
 
             http
                     .authorizeRequests()
-                    .anyRequest().hasRole("USER")
-                    .and()
+                    .antMatchers("/", "/login/*", "/logout").hasAnyRole("ANONYMOUS", "USER")
+                    .antMatchers("/admin/**", "/events/").hasRole("ADMIN")
+                    .antMatchers("/**").hasRole("USER");
+            http
+                    .exceptionHandling().accessDeniedPage("/errors/403");
+            http
                     .formLogin()
                     .loginPage("/login/form")
                     .loginProcessingUrl("/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
-
                     .permitAll()
-                    .failureUrl("/login/form?error")
-                    .and()
+                    .failureUrl("/login/form?error");
+            http
                     .logout()
                     .logoutUrl("/logout")
                     .logoutSuccessUrl("/login/form?logout")
-                    .permitAll()
-            ;
+                    .permitAll();
         }
 
+        @Override
+        public void configure(WebSecurity web) {
+//            web.ignoring().antMatchers("");
+        }
     }
 }

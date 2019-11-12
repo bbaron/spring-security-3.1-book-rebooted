@@ -4,6 +4,7 @@ import app.domain.CalendarUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -45,7 +46,11 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     @Override
     @Transactional(readOnly = true)
     public CalendarUser getUser(int id) {
-        return jdbcOperations.queryForObject(CALENDAR_USER_QUERY + "id = ?", CalendarUserRowMapper.USER, id);
+        try {
+            return jdbcOperations.queryForObject(CALENDAR_USER_QUERY + "id = ?", CalendarUserRowMapper.USER, id);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @Override

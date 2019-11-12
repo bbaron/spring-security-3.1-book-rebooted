@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="header :: common_header('Oops')">
+    <title>Oops</title>
+</head>
+<body>
+
+<div th:replace="header :: navbar"></div>
+
+<div class="container">
+    <h2>Danger, Will Robinson</h2>
+    <h3 th:text="'Status: ' + ${status}">Status</h3>
+</div>
+</body>
+</html>

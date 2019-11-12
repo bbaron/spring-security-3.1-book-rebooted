@@ -45,6 +45,9 @@ public class EventsController {
     @GetMapping("/{eventId}")
     public ModelAndView show(@PathVariable int eventId) {
         Event event = calendarService.getEvent(eventId);
+        if (event == null) {
+            throw new NotFoundException("No such event with id " + eventId);
+        }
         return new ModelAndView("events/show", "event", event);
     }
 
