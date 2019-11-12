@@ -30,35 +30,6 @@ public class SecurityConfigs {
     }
 
     @Configuration
-    @Order(1)
-    public static class StaticSecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/css/**")
-                    .authorizeRequests()
-                    .anyRequest().permitAll()
-                    .and()
-                    .csrf().disable();
-
-        }
-    }
-
-    @Configuration
-    @Order(2)
-    public static class H2SecurityConfig extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/h2-console/**")
-                    .authorizeRequests()
-                    .anyRequest().permitAll()
-                    .and()
-                    .csrf().disable()
-                    .headers().frameOptions().disable();
-
-        }
-    }
-
-    @Configuration
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -87,7 +58,7 @@ public class SecurityConfigs {
 
         @Override
         public void configure(WebSecurity web) {
-//            web.ignoring().antMatchers("");
+            web.ignoring().antMatchers("/css/**", "/h2-console/**");
         }
     }
 }
