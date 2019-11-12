@@ -79,8 +79,8 @@ public class EventsController {
     @GetMapping(path = "/new", params = "auto")
     public String createEventFormAutoPopulate(@ModelAttribute CreateEventForm createEventForm) {
         // provide default values to make user submission easier
-        createEventForm.setSummary("A new event....");
-        createEventForm.setDescription("This was auto-populated to save time creating a valid event.");
+        createEventForm.setSummary("A new event...");
+        createEventForm.setDescription("This was auto populated to save time creating a valid event.");
         createEventForm.setWhen(LocalDateTime.now());
 
         // make the attendee not the current user

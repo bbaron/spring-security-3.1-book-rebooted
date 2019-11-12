@@ -2,7 +2,6 @@ package app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,7 +35,7 @@ public class SecurityConfigs {
 
             http
                     .authorizeRequests()
-                    .antMatchers("/", "/login/*", "/logout").hasAnyRole("ANONYMOUS", "USER")
+                    .antMatchers("/", "/login/*", "/logout", "/signup/*").permitAll()
                     .antMatchers("/admin/**", "/events/").hasRole("ADMIN")
                     .antMatchers("/**").hasRole("USER");
             http
@@ -48,6 +47,7 @@ public class SecurityConfigs {
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .permitAll()
+                    .defaultSuccessUrl("/default")
                     .failureUrl("/login/form?error");
             http
                     .logout()

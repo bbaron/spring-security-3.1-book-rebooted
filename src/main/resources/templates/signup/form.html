@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="header :: common_header('Signup')">
+    <title>Create Event</title>
+</head>
+<body>
+
+<div th:replace="header :: navbar"></div>
+
+<div class="container">
+    <div th:replace="~{header :: messages}"></div>
+    <h1 id="title">Signup</h1>
+    <form action="#" th:action="@{/signup/new}" method="post" th:object="${signupForm}">
+        <!--        <form:errors path="*" element="div" cssClass="alert alert-error"/>-->
+        <fieldset>
+            <legend>User Information</legend>
+            <div class="control-group">
+                <label class="control-label" for="firstName">First Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{firstName}" id="firstName"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="lastName">Last Name</label>
+                <div class="controls">
+                    <input class="input-xlarge" th:field="*{lastName}" id="lastName"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email">Email (Username)</label>
+                <div class="controls">
+                    <input type="email" class="input-xlarge" th:field="*{email}" id="email"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="password">Password</label>
+                <div class="controls">
+                    <input type="password" class="input-xlarge" th:field="*{password}" id="password"/>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="controls">
+                    <input id="submit" type="submit" value="Create Account"/>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
+</body>
+</html>
