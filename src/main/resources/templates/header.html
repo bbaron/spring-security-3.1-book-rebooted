@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 
 <head th:fragment="common_header(title)">
     <!--suppress ThymeleafVariablesResolveInspection -->
@@ -9,7 +11,7 @@
     <link href="/static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
     <style>
         body {
-            padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            padding-top: 80px; /* 60px to make the container go all the way to the bottom of the topbar */
         }
     </style>
 
@@ -22,20 +24,46 @@
             <div class="nav-collapse">
                 <ul class="nav">
                     <li><a id="navWelcomeLink" href="/">Welcome</a></li>
-                    <li><a id="navEventsLink" href="/events/">All Events</a></li>
-                    <li><a id="navMyEventsLink" href="/events/my">My Events</a></li>
-                    <li><a id="navCreateEventLink" href="/events/form">Create Event</a></li>
-                    <li><!--suppress HtmlUnknownTarget -->
-                        <a id="navH2Link" href="/h2-console">H2</a></li>
+                    <li sec:authorize-url="/events/"><a id="navEventsLink" href="/events/">All Events</a></li>
+                    <li sec:authorize-url="/events/my"><a id="navMyEventsLink" href="/events/my">My Events</a></li>
+                    <li sec:authorize-url="/events/form"><a id="navCreateEventLink" href="/events/form">Create Event</a></li>
+                    <li>
+                        <!--suppress HtmlUnknownTarget -->
+                        <a id="navH2Link" href="/h2-console"  target="_blank">H2</a>
+                    </li>
                 </ul>
             </div>
             <div id="nav-account" class="nav-collapse pull-right">
                 <ul class="nav">
-                    <form th:action="@{/logout}" method="post">
-                        <input id="submit" class="btn" name="submit" type="submit" value="Logout"/>
-                    </form>
+<!--                            <li id="greeting"><div>Welcome user1@example.com</div></li>-->
+<!--                            <li><a id="navLogoutLink" href="/logout">Logout</a></li>-->
+                            <li><a id="navSignupLink" href="/signup/form">Signup</a></li>
+                            <li>
+                                <form class="form-inline form-horizontal well">
+                                    <button type="submit"><i class="icon-off"></i></button>
+                                </form>
+                            </li>
                 </ul>
             </div>
+<!--            <div id="nav-account" class="nav-collapse pull-right">-->
+<!--                <ul class="nav">-->
+<!--                    <th:block sec:authorize="isAuthenticated()">-->
+<!--                        <li><p th:text="'Welcome ' + ${#authentication.name}">You</p></li>-->
+<!--                        <li>-->
+<!--                            <form th:action="@{/logout}" method="post">-->
+<!--                                <input id="submit" class="btn" name="submit" type="submit" value="Logout"/>-->
+<!--                            </form>-->
+<!--                        </li>-->
+<!--                    </th:block>-->
+
+<!--                    <th:block sec:authorize="!isAuthenticated()">-->
+<!--                        <li>-->
+<!--                            &lt;!&ndash;suppress HtmlUnknownTarget &ndash;&gt;-->
+<!--                            <a id="loginUrl" href="/login/form">Login</a>-->
+<!--                        </li>-->
+<!--                    </th:block>-->
+<!--                </ul>-->
+<!--            </div>-->
         </div>
     </div>
 

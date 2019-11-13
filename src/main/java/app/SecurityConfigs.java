@@ -61,7 +61,7 @@ public class SecurityConfigs {
 
         @Override
         public void configure(WebSecurity web) {
-            web.ignoring().antMatchers("/css/**", "/h2-console/**");
+            web.ignoring().antMatchers("/css/**", "/h2-console/**", "/img/**", "/js/**");
         }
 
         @Bean
