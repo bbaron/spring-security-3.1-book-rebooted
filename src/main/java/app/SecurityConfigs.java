@@ -9,6 +9,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @EnableWebSecurity
 public class SecurityConfigs {
@@ -59,6 +62,14 @@ public class SecurityConfigs {
         @Override
         public void configure(WebSecurity web) {
             web.ignoring().antMatchers("/css/**", "/h2-console/**");
+        }
+
+        @Bean
+        public SpringTemplateEngine templateEngine(ITemplateResolver templateResolver, SpringSecurityDialect sec) {
+            final SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+            templateEngine.setTemplateResolver(templateResolver);
+            templateEngine.addDialect(sec); // Enable use of "sec"
+            return templateEngine;
         }
     }
 }
