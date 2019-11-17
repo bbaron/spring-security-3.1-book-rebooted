@@ -51,6 +51,10 @@
                             <!--suppress HtmlUnknownTarget -->
                             <a id="loginUrl" href="/login/form">Login</a>
                         </li>
+                        <li>
+                            <!--suppress HtmlUnknownTarget -->
+                            <a id="signupUrl" href="/signup/form">Signup</a>
+                        </li>
                     </th:block>
                 </ul>
             </div>
@@ -59,7 +63,7 @@
 
 </div>
 
-<div class="alert alert-success" id="message" th:fragment="messages">
+<div th:if="${message}" th:text="${message}" class="alert alert-success" id="message" th:fragment="messages">
     Message Placeholder
 </div>
 

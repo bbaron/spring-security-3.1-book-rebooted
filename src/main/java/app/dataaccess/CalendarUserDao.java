@@ -44,8 +44,8 @@ public interface CalendarUserDao {
      * Creates a new {@link CalendarUser}.
      *
      * @param user the new {@link CalendarUser} to create. The {@link CalendarUser#getId()} must be null.
-     * @return the new {@link CalendarUser#getId()}.
+     * @return the new {@link CalendarUser}.
      * @throws IllegalArgumentException if {@link CalendarUser#getId()} is non-null.
      */
-    int createUser(CalendarUser user);
+    CalendarUser createUser(CalendarUser user);
 }

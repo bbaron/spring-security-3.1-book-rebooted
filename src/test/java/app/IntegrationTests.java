@@ -36,7 +36,7 @@ class IntegrationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"/", "/login/form", "/css/bootstrap.css"})
+    @ValueSource(strings = {"/", "/login/form", "/signup/form", "/css/bootstrap.css"})
     void givenAnonymousUser_requestIsOk(String path) throws Exception {
         mvc.perform(get(path)).andExpect(status().isOk());
     }

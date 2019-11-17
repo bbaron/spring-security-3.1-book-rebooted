@@ -49,7 +49,7 @@ public class DefaultCalendarService implements CalendarService {
         return userDao.findUsersByEmail(partialEmail);
     }
 
-    public int createUser(CalendarUser user) {
+    public CalendarUser createUser(CalendarUser user) {
         return userDao.createUser(user);
     }
 }

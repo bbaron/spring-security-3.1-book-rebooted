@@ -79,7 +79,7 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
     }
 
     @Override
-    public int createUser(final CalendarUser userToAdd) {
+    public CalendarUser createUser(final CalendarUser userToAdd) {
         if (userToAdd == null) {
             throw new IllegalArgumentException("userToAdd cannot be null");
         }
@@ -97,7 +97,8 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
             ps.setString(4, userToAdd.getLastName());
             return ps;
         }, keyHolder);
-        return requireNonNull(keyHolder.getKey()).intValue();
+        int id = requireNonNull(keyHolder.getKey()).intValue();
+        return userToAdd.withId(id);
     }
 
     // --- non-public static members ---

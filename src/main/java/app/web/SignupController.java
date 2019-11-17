@@ -5,6 +5,8 @@ import app.service.CalendarService;
 import app.service.UserContext;
 import app.web.model.SignupForm;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +21,7 @@ import javax.validation.Valid;
 public class SignupController {
     private final UserContext userContext;
     private final CalendarService calendarService;
+    private final InMemoryUserDetailsManager imudm;
 
     @GetMapping("/signup/form")
     public String signup(Model model) {
@@ -26,7 +29,7 @@ public class SignupController {
         form.setFirstName("Fred");
         form.setLastName("Flintstone");
         form.setPassword("user");
-        form.setEmail("ff@e.com");
+        form.setEmail("flintstone@example.com");
         model.addAttribute("signupForm", form);
         return "signup/form";
     }
@@ -43,14 +46,23 @@ public class SignupController {
             return "signup/form";
         }
 
-        CalendarUser user = CalendarUser.builder()
+        final var user = CalendarUser.builder()
                 .email(email)
                 .firstName(signupForm.getFirstName())
                 .lastName(signupForm.getLastName())
                 .password(signupForm.getPassword())
                 .build();
 
-        redirectAttributes.addFlashAttribute("message", "TODO we will implement signup later in the chapter");
+        final var newUser = calendarService.createUser(user);
+        var userDetails = User.withDefaultPasswordEncoder()
+                .username(newUser.getEmail())
+                .password(newUser.getPassword())
+                .roles("USER")
+                .build();
+        imudm.createUser(userDetails);
+        userContext.setCurrentUser(newUser);
+
+        redirectAttributes.addFlashAttribute("message", "You have successfully signed up and logged in.");
         return "redirect:/";
     }
 }

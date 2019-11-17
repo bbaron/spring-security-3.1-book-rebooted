@@ -3,11 +3,13 @@ package app.service;
 import app.domain.CalendarUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.Assert;
 
 import java.util.Optional;
 
@@ -53,6 +55,9 @@ public class SpringSecurityUserContext implements UserContext {
 
     @Override
     public void setCurrentUser(CalendarUser user) {
-        throw new UnsupportedOperationException();
+        Assert.notNull(user, "user cannot be null");
+        var userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+        var token = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
+        getSecurityContext().orElseThrow().setAuthentication(token);
     }
 }
