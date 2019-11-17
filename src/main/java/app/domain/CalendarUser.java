@@ -2,6 +2,10 @@ package app.domain;
 
 import lombok.*;
 
+import java.io.Serializable;
+
+import static lombok.AccessLevel.PROTECTED;
+
 /**
  * {@link CalendarUser} is this applications notion of a user.
  * It is good to use your own objects to interact with a
@@ -14,10 +18,10 @@ import lombok.*;
  */
 @Getter
 @EqualsAndHashCode(of = "id")
-@RequiredArgsConstructor
+@RequiredArgsConstructor(access = PROTECTED)
 @ToString
 @Builder
-public class CalendarUser {
+public class CalendarUser implements Serializable {
     @With
     private final Integer id;
     private final String firstName;

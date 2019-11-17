@@ -7,11 +7,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
 import java.util.Optional;
+
+import static app.core.authority.CalendarUserAuthorityUtils.createAuthorities;
 
 /**
  * An implementation of {@link UserContext} that looks up the {@link CalendarUser} using the Spring Security's
@@ -23,8 +24,6 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class SpringSecurityUserContext implements UserContext {
-    private final CalendarService calendarService;
-    private final UserDetailsService userDetailsService;
 
     private static Optional<SecurityContext> getSecurityContext() {
         return Optional.ofNullable(SecurityContextHolder.getContext());
@@ -41,14 +40,10 @@ public class SpringSecurityUserContext implements UserContext {
      */
     @Override
     public CalendarUser getCurrentUser() {
-        var email = getAuthentication()
-                .map(Authentication::getName)
+        var auth = getAuthentication()
                 .orElse(null);
-        if (email == null) return null;
-        var result = calendarService.findUserByEmail(email);
-        if (result == null)
-            throw new IllegalStateException("Spring Security is not in sync with CalendarUsers." +
-                    " Could not find user with email " + email);
+        if (auth == null) return null;
+        var result = (CalendarUser) auth.getPrincipal();
         log.debug("Current user: {}", result);
         return result;
     }
@@ -56,8 +51,7 @@ public class SpringSecurityUserContext implements UserContext {
     @Override
     public void setCurrentUser(CalendarUser user) {
         Assert.notNull(user, "user cannot be null");
-        var userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-        var token = new UsernamePasswordAuthenticationToken(userDetails, user.getPassword(), userDetails.getAuthorities());
+        var token = new UsernamePasswordAuthenticationToken(user, user.getPassword(), createAuthorities(user));
         getSecurityContext().orElseThrow().setAuthentication(token);
     }
 }

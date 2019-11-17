@@ -7,6 +7,8 @@ import app.web.model.SignupForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,16 +48,20 @@ public class SignupController {
             result.rejectValue("email", "errors.signup.email", "Email address is already in use.");
             return "signup/form";
         }
+        var passwordEncoder = new BCryptPasswordEncoder();
+
+        var password = "{bcrypt}" + passwordEncoder.encode(signupForm.getPassword());
 
         final var user = CalendarUser.builder()
                 .email(email)
                 .firstName(signupForm.getFirstName())
                 .lastName(signupForm.getLastName())
-                .password(signupForm.getPassword())
+                .password(password)
                 .build();
 
         final var newUser = calendarService.createUser(user);
-        var userDetails = User.withDefaultPasswordEncoder()
+        var userDetails = User.builder()
+                .passwordEncoder(passwordEncoder::encode)
                 .username(newUser.getEmail())
                 .password(newUser.getPassword())
                 .roles("USER")

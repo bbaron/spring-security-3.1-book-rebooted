@@ -1,12 +1,16 @@
 package app.core.userdetails;
 
 import app.dataaccess.CalendarUserDao;
+import app.domain.CalendarUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.io.Serializable;
+import java.util.Collection;
 
 import static app.core.authority.CalendarUserAuthorityUtils.createAuthorities;
 
@@ -18,12 +22,44 @@ public class CalendarUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = calendarUserDao.findUserByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
-        var authorities = createAuthorities(user);
+        return new CalendarUserDetails(user);
+    }
 
-        return User.withDefaultPasswordEncoder()
-                .username(user.getEmail())
-                .password(user.getPassword())
-                .authorities(authorities)
-                .build();
+    private final class CalendarUserDetails extends CalendarUser implements UserDetails, Serializable {
+
+        CalendarUserDetails(CalendarUser u) {
+            super(u.getId(), u.getFirstName(), u.getLastName(),
+                    u.getEmail(), u.getPassword());
+        }
+
+        @Override
+        public Collection<? extends GrantedAuthority> getAuthorities() {
+            return createAuthorities(this);
+        }
+
+        @Override
+        public String getUsername() {
+            return getEmail();
+        }
+
+        @Override
+        public boolean isAccountNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isAccountNonLocked() {
+            return true;
+        }
+
+        @Override
+        public boolean isCredentialsNonExpired() {
+            return true;
+        }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
     }
 }

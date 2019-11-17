@@ -36,7 +36,7 @@
             <div id="nav-account" class="nav-collapse pull-right">
                 <ul class="nav">
                     <th:block sec:authorize="isAuthenticated()">
-                        <li><p th:text="'Welcome ' + ${#authentication.name}">Welcome ...</p></li>
+                        <li><p th:text="'Welcome ' + ${#authentication.principal.firstName}">Welcome ...</p></li>
                         <li>
                             <form th:action="@{/logout}" method="post" class="form-inline form-horizontal">
                                 <button id="submitLogout" name="submit" type="submit">
