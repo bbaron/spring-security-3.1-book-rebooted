@@ -35,35 +35,25 @@
             </div>
             <div id="nav-account" class="nav-collapse pull-right">
                 <ul class="nav">
-<!--                            <li id="greeting"><div>Welcome user1@example.com</div></li>-->
-<!--                            <li><a id="navLogoutLink" href="/logout">Logout</a></li>-->
-                            <li><a id="navSignupLink" href="/signup/form">Signup</a></li>
-                            <li>
-                                <form class="form-inline form-horizontal well">
-                                    <button type="submit"><i class="icon-off"></i></button>
-                                </form>
-                            </li>
+                    <th:block sec:authorize="isAuthenticated()">
+                        <li><p th:text="'Welcome ' + ${#authentication.name}">Welcome ...</p></li>
+                        <li>
+                            <form th:action="@{/logout}" method="post" class="form-inline form-horizontal">
+                                <button id="submitLogout" name="submit" type="submit">
+                                    <i class="icon-off"></i>
+                                </button>
+                            </form>
+                        </li>
+                    </th:block>
+
+                    <th:block sec:authorize="!isAuthenticated()">
+                        <li>
+                            <!--suppress HtmlUnknownTarget -->
+                            <a id="loginUrl" href="/login/form">Login</a>
+                        </li>
+                    </th:block>
                 </ul>
             </div>
-<!--            <div id="nav-account" class="nav-collapse pull-right">-->
-<!--                <ul class="nav">-->
-<!--                    <th:block sec:authorize="isAuthenticated()">-->
-<!--                        <li><p th:text="'Welcome ' + ${#authentication.name}">You</p></li>-->
-<!--                        <li>-->
-<!--                            <form th:action="@{/logout}" method="post">-->
-<!--                                <input id="submit" class="btn" name="submit" type="submit" value="Logout"/>-->
-<!--                            </form>-->
-<!--                        </li>-->
-<!--                    </th:block>-->
-
-<!--                    <th:block sec:authorize="!isAuthenticated()">-->
-<!--                        <li>-->
-<!--                            &lt;!&ndash;suppress HtmlUnknownTarget &ndash;&gt;-->
-<!--                            <a id="loginUrl" href="/login/form">Login</a>-->
-<!--                        </li>-->
-<!--                    </th:block>-->
-<!--                </ul>-->
-<!--            </div>-->
         </div>
     </div>
 

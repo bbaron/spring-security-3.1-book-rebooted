@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<!--      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">-->
 <head th:replace="header :: common_header('Please Login')">
     <title>Event - Summary</title>
 </head>
 <body>
+<div th:replace="header :: navbar"></div>
+
 <div class="container">
     <form th:action="@{/login}" method="post">
         <div th:if="${param.error}" class="alert alert-error">
