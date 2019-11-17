@@ -28,7 +28,7 @@ public class EventsController {
         this.userContext = userContext;
     }
 
-    @GetMapping("/")
+    @GetMapping(path = {"", "/"})
     public ModelAndView events() {
         return new ModelAndView("events/list", "events", calendarService.getEvents());
     }
@@ -54,7 +54,7 @@ public class EventsController {
     @GetMapping("/form")
     public String createEventForm(Model model
                                   //@ModelAttribute CreateEventForm createEventForm
-            ) {
+    ) {
         var createEventForm = new CreateEventForm();
         createEventForm.setSummary("A new event....");
         createEventForm.setDescription("This was auto-populated to save time creating a valid event.");
