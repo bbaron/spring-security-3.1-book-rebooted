@@ -3,6 +3,7 @@ package app.dataaccess;
 import app.domain.CalendarUser;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An interface for managing {@link CalendarUser} instances.
@@ -27,7 +28,7 @@ public interface CalendarUserDao {
      * @return a {@link CalendarUser} for the given email or null if one could not be found.
      * @throws IllegalArgumentException if email is null.
      */
-    CalendarUser findUserByEmail(String email);
+    Optional<CalendarUser> findUserByEmail(String email);
 
 
     /**

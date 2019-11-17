@@ -4,7 +4,6 @@ import app.domain.CalendarUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +15,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.Objects.requireNonNull;
 
@@ -55,14 +55,15 @@ public class JdbcCalendarUserDao implements CalendarUserDao {
 
     @Override
     @Transactional(readOnly = true)
-    public CalendarUser findUserByEmail(String email) {
+    public Optional<CalendarUser> findUserByEmail(String email) {
         if (email == null) {
             throw new IllegalArgumentException("email cannot be null");
         }
         try {
-            return jdbcOperations.queryForObject(CALENDAR_USER_QUERY + "email = ?", CalendarUserRowMapper.USER, email);
+            var obj = jdbcOperations.queryForObject(CALENDAR_USER_QUERY + "email = ?", CalendarUserRowMapper.USER, email);
+            return Optional.of(obj);
         } catch (EmptyResultDataAccessException notFound) {
-            return null;
+            return Optional.empty();
         }
     }
 

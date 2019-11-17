@@ -42,7 +42,7 @@ public class DefaultCalendarService implements CalendarService {
     }
 
     public CalendarUser findUserByEmail(String email) {
-        return userDao.findUserByEmail(email);
+        return userDao.findUserByEmail(email).orElse(null);
     }
 
     public List<CalendarUser> findUsersByEmail(String partialEmail) {

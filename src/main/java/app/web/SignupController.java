@@ -6,6 +6,7 @@ import app.service.UserContext;
 import app.web.model.SignupForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +22,7 @@ import javax.validation.Valid;
 public class SignupController {
     private final UserContext userContext;
     private final CalendarService calendarService;
-    private final InMemoryUserDetailsManager imudm;
+    private final UserDetailsService userDetailsService;
 
     @GetMapping("/signup/form")
     public String signup(Model model) {
@@ -59,7 +60,10 @@ public class SignupController {
                 .password(newUser.getPassword())
                 .roles("USER")
                 .build();
-        imudm.createUser(userDetails);
+        if (userDetailsService instanceof InMemoryUserDetailsManager) {
+            var imudm = (InMemoryUserDetailsManager) userDetailsService;
+            imudm.createUser(userDetails);
+        }
         userContext.setCurrentUser(newUser);
 
         redirectAttributes.addFlashAttribute("message", "You have successfully signed up and logged in.");

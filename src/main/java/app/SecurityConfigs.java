@@ -2,38 +2,37 @@ package app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @EnableWebSecurity
 public class SecurityConfigs {
-    @Bean
-    public UserDetailsService userDetailsService() {
-        @SuppressWarnings("deprecation")
-        var users = User.withDefaultPasswordEncoder();
-        var user1 = users.username("user1@example.com")
-                .password("user1")
-                .roles("USER")
-                .build();
-        var user2 = users.username("user2@example.com")
-                .password("user2")
-                .roles("USER")
-                .build();
-        var admin = users.username("admin1@example.com")
-                .password("admin1")
-                .roles("USER", "ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(user1, admin, user2);
-    }
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        @SuppressWarnings("deprecation")
+//        var users = User.withDefaultPasswordEncoder();
+//        var user1 = users.username("user1@example.com")
+//                .password("user1")
+//                .roles("USER")
+//                .build();
+//        var user2 = users.username("user2@example.com")
+//                .password("user2")
+//                .roles("USER")
+//                .build();
+//        var admin = users.username("admin1@example.com")
+//                .password("admin1")
+//                .roles("USER", "ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user1, admin, user2);
+//    }
 
     @Configuration
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -75,5 +74,13 @@ public class SecurityConfigs {
             templateEngine.addDialect(sec); // Enable use of "sec"
             return templateEngine;
         }
+    }
+
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        System.out.printf("user1: %s%n", encoder.encode("user1"));
+        System.out.printf("user2: %s%n", encoder.encode("user2"));
+        System.out.printf("admin1: %s%n", encoder.encode("admin1"));
     }
 }
