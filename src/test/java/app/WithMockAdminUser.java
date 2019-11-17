@@ -11,6 +11,6 @@ import static java.lang.annotation.RetentionPolicy.*;
 @Retention(RUNTIME)
 @Inherited
 @Documented
-@WithMockUser(roles = {"USER", "ADMIN"}, username = "admin1")
+@WithMockUser(roles = {"USER", "ADMIN"}, username = "admin1@example.com")
 @interface WithMockAdminUser {
 }

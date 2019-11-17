@@ -2,8 +2,7 @@ package app.service;
 
 import app.dataaccess.CalendarUserDao;
 import app.domain.CalendarUser;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Returns the same user for every call to {@link #getCurrentUser()}. This is used prior to adding security, so that the
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Component;
  *
  * @author Rob Winch
  */
-@Component
+@RequiredArgsConstructor
 public class UserContextStub implements UserContext {
     private final CalendarUserDao userService;
     /**
@@ -19,14 +18,6 @@ public class UserContextStub implements UserContext {
      * modified using {@link #setCurrentUser(CalendarUser)}
      */
     private int currentUserId = 0;
-
-    @Autowired
-    public UserContextStub(CalendarUserDao userService) {
-        if (userService == null) {
-            throw new IllegalArgumentException("userService cannot be null");
-        }
-        this.userService = userService;
-    }
 
     @Override
     public CalendarUser getCurrentUser() {

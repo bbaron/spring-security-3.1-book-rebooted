@@ -51,7 +51,7 @@ class IntegrationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"/events/"})
-    @WithMockUser
+    @WithMockUser1
     void givenUser_requestIsForbidden(String path) throws Exception {
         mvc.perform(get(path))
                 .andExpect(status().isForbidden());
@@ -67,7 +67,7 @@ class IntegrationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"/events/my/", "/events/100", "/events/form"})
-    @WithMockUser
+    @WithMockUser1
     void givenUser_requestIsOk(String path) throws Exception {
         mvc.perform(get(path))
                 .andExpect(status().isOk());
@@ -75,7 +75,7 @@ class IntegrationTests {
 
     @ParameterizedTest
     @ValueSource(strings = {"/logout"})
-    @WithMockUser
+    @WithMockUser1
     void givenUser_postRequestIsSuccess(String path) throws Exception {
         mvc.perform(post(path).with(csrf()))
                 .andExpect(status().isFound());

@@ -52,9 +52,7 @@ public class EventsController {
     }
 
     @GetMapping("/form")
-    public String createEventForm(Model model
-                                  //@ModelAttribute CreateEventForm createEventForm
-    ) {
+    public String createEventForm(Model model) {
         var createEventForm = new CreateEventForm();
         createEventForm.setSummary("A new event....");
         createEventForm.setDescription("This was auto-populated to save time creating a valid event.");

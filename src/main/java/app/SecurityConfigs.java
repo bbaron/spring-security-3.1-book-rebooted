@@ -19,8 +19,12 @@ public class SecurityConfigs {
     public UserDetailsService userDetailsService() {
         @SuppressWarnings("deprecation")
         var users = User.withDefaultPasswordEncoder();
-        var user = users.username("user1@example.com")
+        var user1 = users.username("user1@example.com")
                 .password("user1")
+                .roles("USER")
+                .build();
+        var user2 = users.username("user2@example.com")
+                .password("user2")
                 .roles("USER")
                 .build();
         var admin = users.username("admin1@example.com")
@@ -28,7 +32,7 @@ public class SecurityConfigs {
                 .roles("USER", "ADMIN")
                 .build();
 
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(user1, admin, user2);
     }
 
     @Configuration
