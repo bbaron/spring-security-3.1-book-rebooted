@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,10 +28,10 @@ public class SignupController {
     @GetMapping("/signup/form")
     public String signup(Model model) {
         var form = new SignupForm();
-        form.setFirstName("Fred");
-        form.setLastName("Flintstone");
-        form.setPassword("user");
-        form.setEmail("flintstone@example.com");
+//        form.setFirstName("Fred");
+//        form.setLastName("Flintstone");
+//        form.setPassword("user");
+//        form.setEmail("flintstone@example.com");
         model.addAttribute("signupForm", form);
         return "signup/form";
     }

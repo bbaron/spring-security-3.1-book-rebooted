@@ -10,37 +10,37 @@
 <div class="container">
     <div th:replace="~{header :: messages}"></div>
     <h1 id="title">Signup</h1>
-    <form action="#" th:action="@{/signup/new}" method="post" th:object="${signupForm}">
+    <form action="#" th:action="@{/signup/new}" method="post" th:object="${signupForm}" name="signup">
         <!--        <form:errors path="*" element="div" cssClass="alert alert-error"/>-->
         <fieldset>
             <legend>User Information</legend>
             <div class="control-group">
                 <label class="control-label" for="firstName">First Name</label>
                 <div class="controls">
-                    <input class="input-xlarge" th:field="*{firstName}" id="firstName"/>
+                    <input class="input-xlarge" th:field="*{firstName}" id="firstName" name="firstName"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="lastName">Last Name</label>
                 <div class="controls">
-                    <input class="input-xlarge" th:field="*{lastName}" id="lastName"/>
+                    <input class="input-xlarge" th:field="*{lastName}" id="lastName" name="lastName"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="email">Email (Username)</label>
                 <div class="controls">
-                    <input type="email" class="input-xlarge" th:field="*{email}" id="email"/>
+                    <input type="email" class="input-xlarge" th:field="*{email}" id="email" name="email"/>
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label" for="password">Password</label>
                 <div class="controls">
-                    <input type="password" class="input-xlarge" th:field="*{password}" id="password"/>
+                    <input type="password" class="input-xlarge" th:field="*{password}" id="password" name="password"/>
                 </div>
             </div>
             <div class="control-group">
                 <div class="controls">
-                    <input id="submit" type="submit" value="Create Account"/>
+                    <input id="submit" type="submit" value="Create Account" name="submitButton"/>
                 </div>
             </div>
         </fieldset>

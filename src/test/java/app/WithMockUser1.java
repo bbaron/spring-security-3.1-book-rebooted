@@ -1,6 +1,6 @@
 package app;
 
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Inherited;
@@ -15,6 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Inherited
 @Documented
-@WithMockUser(roles = "USER", username = "user1@example.com")
+@WithUserDetails("user1@example.com")
 @interface WithMockUser1 {
 }
