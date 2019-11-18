@@ -1,6 +1,7 @@
 package app;
 
 import app.domain.CalendarUser;
+import app.page.WelcomePage;
 import app.service.CalendarService;
 import app.service.UserContext;
 import app.web.SignupController;
@@ -59,5 +60,20 @@ class WelcomeControllerHtmlUnitTests {
         var message = landing.getElementById("message");
         assertThat(message) .isNotNull();
         assertThat(message.getTextContent()).isEqualTo("You have successfully signed up and logged in.");
+    }
+
+    @Test
+    void testSignup() throws Exception {
+        CalendarUser user = CalendarUser.builder()
+                .email("test@example.com")
+                .firstName("f")
+                .lastName("l")
+                .password("pass")
+                .build();
+        when(calendarService.createUser(user)).thenReturn(user.withId(1000));
+        var welcomePage = new WelcomePage(webClient);
+        var signupPage = welcomePage.signupPage();
+        var landing = signupPage.signup(user);
+        assertThat(landing).isNotNull();
     }
 }
