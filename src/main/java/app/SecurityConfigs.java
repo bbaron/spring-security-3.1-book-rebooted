@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
@@ -23,8 +24,8 @@ public class SecurityConfigs {
     @Configuration
     @RequiredArgsConstructor
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-        private final AuthenticationProvider authenticationProvider;
-        private final AuthenticationEntryPoint authenticationEntryPoint;
+//        private final AuthenticationProvider authenticationProvider;
+//        private final AuthenticationEntryPoint authenticationEntryPoint;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -36,10 +37,9 @@ public class SecurityConfigs {
                     .antMatchers("/**").hasRole("USER");
             http
                     .exceptionHandling()
-                    .authenticationEntryPoint(authenticationEntryPoint)
+//                    .authenticationEntryPoint(authenticationEntryPoint)
                     .accessDeniedPage("/errors/403");
-            http.addFilterAt(new DomainUsernamePasswordAuthenticationFilter(),
-                    Form)
+//            http.addFilterAt(new DomainUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
             http
                     .formLogin()
                     .loginPage("/login/form")
@@ -63,7 +63,7 @@ public class SecurityConfigs {
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(authenticationProvider);
+//            auth.authenticationProvider(authenticationProvider);
 
         }
 
