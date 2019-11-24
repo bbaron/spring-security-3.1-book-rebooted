@@ -21,7 +21,7 @@ import static lombok.AccessLevel.PROTECTED;
 @RequiredArgsConstructor(access = PROTECTED)
 @ToString
 @Builder
-public class CalendarUser implements Serializable {
+public class CalendarUser {
     @With
     private final Integer id;
     private final String firstName;

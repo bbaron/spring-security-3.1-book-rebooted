@@ -1,18 +1,12 @@
 package app;
 
-import app.web.authentication.DomainUsernamePasswordAuthenticationFilter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
@@ -22,11 +16,7 @@ public class SecurityConfigs {
 
 
     @Configuration
-    @RequiredArgsConstructor
     public static class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-//        private final AuthenticationProvider authenticationProvider;
-//        private final AuthenticationEntryPoint authenticationEntryPoint;
-
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
@@ -36,10 +26,7 @@ public class SecurityConfigs {
                     .antMatchers("/admin/**", "/events/").hasRole("ADMIN")
                     .antMatchers("/**").hasRole("USER");
             http
-                    .exceptionHandling()
-//                    .authenticationEntryPoint(authenticationEntryPoint)
-                    .accessDeniedPage("/errors/403");
-//            http.addFilterAt(new DomainUsernamePasswordAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                    .exceptionHandling().accessDeniedPage("/errors/403");
             http
                     .formLogin()
                     .loginPage("/login/form")
@@ -59,12 +46,6 @@ public class SecurityConfigs {
         @Override
         public void configure(WebSecurity web) {
             web.ignoring().antMatchers("/css/**", "/h2-console/**", "/img/**", "/js/**", "/bootstrap4");
-        }
-
-        @Override
-        protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//            auth.authenticationProvider(authenticationProvider);
-
         }
 
         @Bean

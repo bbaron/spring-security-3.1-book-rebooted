@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -19,7 +18,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 @EqualsAndHashCode(of = "id")
 @Builder
-public class Event implements Serializable {
+public class Event {
     @With
     private final Integer id;
 
