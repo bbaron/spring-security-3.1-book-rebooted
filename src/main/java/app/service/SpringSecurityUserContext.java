@@ -29,6 +29,10 @@ public class SpringSecurityUserContext implements UserContext {
         return Optional.ofNullable(SecurityContextHolder.getContext());
     }
 
+    private static SecurityContext getRequiredSecurityContext() {
+        return getSecurityContext().orElseThrow();
+    }
+
     private static Optional<Authentication> getAuthentication() {
         return getSecurityContext().map(SecurityContext::getAuthentication);
     }
@@ -52,6 +56,6 @@ public class SpringSecurityUserContext implements UserContext {
     public void setCurrentUser(CalendarUser user) {
         Assert.notNull(user, "user cannot be null");
         var token = new UsernamePasswordAuthenticationToken(user, user.getPassword(), createAuthorities(user));
-        getSecurityContext().orElseThrow().setAuthentication(token);
+        getRequiredSecurityContext().setAuthentication(token);
     }
 }
