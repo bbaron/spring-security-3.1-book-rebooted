@@ -35,10 +35,22 @@ public class EventsController {
 
     @GetMapping("/my")
     public ModelAndView myEvents() {
-        CalendarUser currentUser = userContext.getCurrentUser();
-        Integer currentUserId = currentUser.getId();
-        ModelAndView result = new ModelAndView("events/my", "events", calendarService.findForUser(currentUserId));
-        result.addObject("currentUser", currentUser);
+        return myEvents(userContext.getCurrentUser());
+    }
+
+    /**
+     * We add this method for demonstrating incorporating method parameters with Spring Security's @PreAuthorize based
+     * security.
+     */
+    @RequestMapping(value = "/my", params = "userId")
+    public ModelAndView userEvents(@RequestParam int userId) {
+        return myEvents(calendarService.getUser(userId));
+    }
+
+    private ModelAndView myEvents(CalendarUser user) {
+        Integer userId = user.getId();
+        ModelAndView result = new ModelAndView("events/my", "events", calendarService.findForUser(userId));
+        result.addObject("currentUser", user);
         return result;
     }
 

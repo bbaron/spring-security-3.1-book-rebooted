@@ -2,6 +2,7 @@ package app;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,6 +13,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, proxyTargetClass = true)
 public class SecurityConfigs {
 
 
@@ -23,7 +25,7 @@ public class SecurityConfigs {
             http
                     .authorizeRequests()
                     .antMatchers("/", "/login/*", "/logout", "/signup/*").permitAll()
-                    .antMatchers("/admin/**", "/events/").hasRole("ADMIN")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/**").hasRole("USER");
             http
                     .exceptionHandling().accessDeniedPage("/errors/403");

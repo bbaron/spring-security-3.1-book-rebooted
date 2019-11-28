@@ -3,6 +3,9 @@ package app.service;
 import app.domain.CalendarUser;
 import app.domain.Event;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -52,6 +55,9 @@ public interface CalendarService {
      * @return the {@link Event}. Cannot be null.
      * @throws RuntimeException if the {@link Event} cannot be found.
      */
+    @PostAuthorize("hasRole('ROLE_ADMIN') or " +
+            "principal.id == returnObject.owner.id or " +
+            "principal.id == returnObject.attendee.id")
     Event getEvent(int eventId);
 
     /**
@@ -70,6 +76,7 @@ public interface CalendarService {
      * @return a non-null {@link List} of {@link Event}'s intended for the specified {@link CalendarUser}. If the
      * {@link CalendarUser} does not exist an empty List will be returned.
      */
+    @PreAuthorize("hasRole('ROLE_ADMIN') or principal.id == #userId")
     List<Event> findForUser(int userId);
 
     /**
@@ -77,5 +84,7 @@ public interface CalendarService {
      *
      * @return a non-null {@link List} of {@link Event}'s
      */
+    @PostFilter("principal == filterObject.owner or " +
+            "principal == filterObject.attendee")
     List<Event> getEvents();
 }

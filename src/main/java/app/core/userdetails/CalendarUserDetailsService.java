@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 import static app.core.authority.CalendarUserAuthorityUtils.createAuthorities;
@@ -25,9 +24,9 @@ public class CalendarUserDetailsService implements UserDetailsService {
         return new CalendarUserDetails(user);
     }
 
-    private final class CalendarUserDetails extends CalendarUser implements UserDetails, Serializable {
+    public static final class CalendarUserDetails extends CalendarUser implements UserDetails {
 
-        CalendarUserDetails(CalendarUser u) {
+        public CalendarUserDetails(CalendarUser u) {
             super(u.getId(), u.getFirstName(), u.getLastName(),
                     u.getEmail(), u.getPassword());
         }

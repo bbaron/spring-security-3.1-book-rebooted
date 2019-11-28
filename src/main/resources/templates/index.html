@@ -22,14 +22,20 @@
             will be able to view this page. Additionally, the logged in user will be used rather than always using
             user1@example.com
         </li>
-        <li><a id="createEventLink" href="events/form">Create Event</a> - will allow creating a new Event with
+        <li><a id="myEventsUser1Link" href="events/my?userId=0">My Events (userId=0)</a> - shows all events that are associated to user1@example.com.</li>
+        <li><a id="myEventsUser2Link" href="events/my?userId=1">My Events (userId=2)</a> - shows all events that are associated to user2@exmple.com.</li>
+        <li><a id="myEventsUser3Link" href="events/my?userId=1">My Events (userId=1)</a> - shows all events that are associated to admin1@exmple.com.</li>
+        <li><a id="myEventsUser102Link" href="events/102">Lunch Event</a></li>
+
+        <li th:if="${showCreateLink}">
+            <a id="createEventLink" href="events/form">Create Event</a> - will allow creating a new Event with
             user1@example.com as the owner. Once we add security, only a logged in
             user will be able to view this page. Additionally, the logged in user will be the owner rather than always
             using user1@example.com.
         </li>
-        <li>
+        <li th:if="${showAdminLink}">
             <!--suppress HtmlUnknownTarget -->
-            <a id="h2Link" href="h2-console" th:href="@{/h2-console}">H2 Database Console</a> - Allows you to interact with the database using a
+            <a id="h2Link" href="h2-console" th:href="@{/h2-console}" target="_blank">H2 Database Console</a> - Allows you to interact with the database using a
             web console. To use it:
             <ul>
                 <li>Click the link above.</li>
